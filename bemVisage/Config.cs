@@ -61,7 +61,7 @@ namespace bemVisage
 
             multiSleeper = new MultiSleeper();
 
-            Factory = MenuFactory.Create("Private Visage");
+            Factory = MenuFactory.Create("bemVisage");
             LanePushing = Factory.Menu("Lane Push");
             AbilitiesInCombo = Factory.Menu("Combo Abilities");
             Drawings = Factory.Menu("Drawings");

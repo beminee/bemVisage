@@ -25,7 +25,7 @@ using Config = bemVisage.Config;
 
 namespace bemVisage
 {
-    [ExportPlugin(name: "Private Visage", mode: StartupMode.Auto, units: HeroId.npc_dota_hero_visage)]
+    [ExportPlugin(name: "bemVisage", mode: StartupMode.Auto, units: HeroId.npc_dota_hero_visage)]
     public class BemVisage : Plugin
     {
         [ImportMany] private IEnumerable<IFeature> features;
