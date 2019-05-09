@@ -54,6 +54,8 @@ namespace bemVisage
         public MenuItem<bool> DrawTargetIndicator { get; set; }
         public MenuItem<bool> DrawInformationTab { get; set; }
 
+        public MenuItem<Slider> TextSize { get; set; }
+
         public Config(BemVisage Main)
         {
             bemVisage = Main;
@@ -84,6 +86,7 @@ namespace bemVisage
             GraveChillsDraw = Drawings.Item("Draw Grave Chills Range", true);
             DrawTargetIndicator = Drawings.Item("Draw target indicator", true);
             DrawInformationTab = Drawings.Item("Draw information tab", true);
+            TextSize = Drawings.Item("Text size", new Slider(13, 1, 100));
 
             ComboKey.Item.ValueChanged += ComboKeyChanged;
             var key = KeyInterop.KeyFromVirtualKey((int) ComboKey.Value.Key);

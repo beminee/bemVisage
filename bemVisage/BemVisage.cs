@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +23,9 @@ using PlaySharp.Toolkit.Logging;
 using bemVisage;
 using bemVisage.Core;
 using SharpDX;
-using Config = bemVisage.Config;
+using System.Linq;
+using Ensage.SDK.Helpers;
+using UnitExtensions = Ensage.SDK.Extensions.UnitExtensions;
 
 namespace bemVisage
 {
@@ -32,6 +36,8 @@ namespace bemVisage
 
         public IServiceContext Context { get; }
         public IRendererManager RendererManager { get; set; }
+        private ITextureManager TextureManager { get; set; }
+        private List<string> LoadedHeroes { get; set; }
 
         private AbilityFactory AbilityFactory { get; }
 
@@ -122,6 +128,7 @@ namespace bemVisage
         {
             Context = context;
             RendererManager = context.Renderer;
+            TextureManager = context.TextureManager;
             AbilityFactory = context.AbilityFactory;
         }
 
@@ -139,12 +146,21 @@ namespace bemVisage
 
             LaneHelper = new LaneHelper(this);
 
+            //if (EntityManager<Hero>.Entities.Any(x => x != null && x.IsValid && UnitExtensions.IsEnemy(x, this.Context.Owner)))
+            //{
+            //    foreach (var hero in EntityManager<Hero>.Entities)
+            //    {
+            //        //AddTexture(hero);
+            //        Log.Debug($"{hero.Name}");
+            //    }
+            //}
+
             foreach (var feature in features)
             {
                 feature.Activate(Config);
                 Log.Debug($"{feature.ToString()} activated.");
             }
-
+            //EntityManager<Hero>.EntityAdded += EntityManagerOnEntityAdded;
             RendererManager.Draw += OnDraw;
         }
 
@@ -159,6 +175,7 @@ namespace bemVisage
             }
 
             Config?.Dispose();
+            //EntityManager<Hero>.EntityAdded -= EntityManagerOnEntityAdded;
             RendererManager.Draw -= OnDraw;
         }
 
@@ -166,20 +183,27 @@ namespace bemVisage
         {
             if (Config.DrawInformationTab)
             {
-                var startPos = new Vector2(Convert.ToSingle(Drawing.Width) - 130,
+                var startPos = new Vector2(Convert.ToSingle(Drawing.Width) - 175,
                     Convert.ToSingle(Drawing.Height * 0.8));
 
                 var combo = Config.ComboKey;
                 RendererManager.DrawText(startPos,
                     "Combo" + " [" + Utils.KeyToText(Config.ComboKey.Item.GetValue<KeyBind>().Key) + "] " +
-                    (combo ? "ON" : "OFF"), combo ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red);
+                    (combo ? "ON" : "OFF"), combo ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
                 var lastHit = Config.LasthitKey;
                 RendererManager.DrawText(startPos + new Vector2(0, 30),
                     "Last Hit" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
-                    (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red);
+                    (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
+
+                //if (Config.ComboKey && Config.Target != null)
+                //{
+                //    RendererManager.DrawTexture($"{Config.Target.Name}", new SharpDX.RectangleF(startPos.X, startPos.Y - 90, 150, 85));
+                //    RendererManager.DrawRectangle(new SharpDX.RectangleF(startPos.X, startPos.Y - 30, 155, 155), System.Drawing.Color.Red);
+                //}
             }
         }
+
 
         public async Task<bool> ShouldExecute(CancellationToken token)
         {
@@ -192,6 +216,23 @@ namespace bemVisage
 
             return true;
         }
+
+        //private void EntityManagerOnEntityAdded(object sender, Hero unit)
+        //{
+        //    AddTexture(unit);
+        //}
+
+        //private void AddTexture(Hero hero)
+        //{
+        //    if (LoadedHeroes.Contains(hero.Name) || hero.Team == this.Context.Owner.Team)
+        //    {
+        //        return;
+        //    }
+
+        //    TextureManager.LoadFromDota($"{hero.Name}", $"panorama/images/heroes/{hero.Name}_png.vtex_c");
+        //    Log.Debug($"Loaded {hero.Name} texture");
+        //    LoadedHeroes.Add(hero.Name);
+        //}
 
         public bool IsItemEnabled(AbilityId id)
         {

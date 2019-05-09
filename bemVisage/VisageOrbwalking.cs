@@ -301,6 +301,7 @@ namespace bemVisage
         }
 
 
+
         private void OnUpdate()
         {
             if (Config.TargetOption.Value.SelectedValue.Contains("Lock") && TargetSelector.IsActive
@@ -361,7 +362,7 @@ namespace bemVisage
                 this.Context.Particle.Remove("TargetIndicator");
             }
 
-            if (Config.FamiliarsLock && (Config.FamiliarTarget != null) && this.Config.DrawTargetIndicator)
+            if (Config.FamiliarsLock && (Config.FamiliarTarget != null) && Main.Updater.AllFamiliars.Count() > 0 && this.Config.DrawTargetIndicator)
             {
                 this.Context.Particle.DrawTargetLine(Main.Updater.AllFamiliars.First().Unit, "FamiliarTargetIndicator",
                     Config.FamiliarTarget.NetworkPosition, Color.Yellow);
