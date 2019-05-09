@@ -89,7 +89,7 @@ namespace bemVisage.Core
 
                     if (RunAwayBool && enemyHero != null)
                     {
-                        familiar.Unit.Move(this.Fountain.Position);
+                        familiar.Unit.Move(this.Owner.Position);
                         return;
                     }
 
@@ -109,8 +109,9 @@ namespace bemVisage.Core
                     {
                         var myDist = familiar.Unit.Distance2D(closestTower);
                         var allyCreeps = EntityManager<Creep>.Entities.Where(x =>
-                            x.IsAlly(familiar.Unit) && x.IsSpawned && x.IsAlive &&
+                            x.IsAlly(familiar.Unit) && x.IsSpawned && x.IsAlive && !x.NetworkName.Contains("CDOTA_Unit_VisageFamiliar") &&
                             x.IsInRange(closestTower, 700) && x.Distance2D(closestTower) <= myDist);
+
                         if (allyCreeps.Any())
                         {
                             if (closestTower.AttackTarget != null && closestTower.AttackTarget.Equals(familiar.Unit))

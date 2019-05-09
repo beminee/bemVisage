@@ -80,7 +80,7 @@ namespace bemVisage
             FamiliarsLock = FamiliarMenu.Item("Familiars Target Lock", new KeyBind('E', KeyBindType.Toggle, false));
             FollowKey = FamiliarMenu.Item("Follow Key", new KeyBind('F', KeyBindType.Toggle, false));
 
-            LasthitKey = LanePushing.Item("Lasthit Key", new KeyBind('D', KeyBindType.Toggle, false));
+            LasthitKey = LanePushing.Item("Lane Push Key", new KeyBind('D', KeyBindType.Toggle, false));
 
             SoulAssumptionDraw = Drawings.Item("Draw Soul Assumption Range", true);
             GraveChillsDraw = Drawings.Item("Draw Grave Chills Range", true);

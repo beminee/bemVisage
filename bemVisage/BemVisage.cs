@@ -193,7 +193,7 @@ namespace bemVisage
 
                 var lastHit = Config.LasthitKey;
                 RendererManager.DrawText(startPos + new Vector2(0, 30),
-                    "Last Hit" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
+                    "Lane Push" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
                     (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
                 //if (Config.ComboKey && Config.Target != null)
