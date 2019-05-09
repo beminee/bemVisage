@@ -57,7 +57,6 @@ namespace bemVisage.Core
             RunAwayBool = Factory.Item("Run away", true);
 
             Config.LasthitKey.PropertyChanged += LasthitKeyPropertyChanged;
-
         }
 
         private void LasthitKeyPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -132,7 +131,8 @@ namespace bemVisage.Core
                         else
                         {
                             var friendlyTower = EntityManager<Tower>.Entities
-                                .Where(x => x.IsAlive && x.IsAlly(familiar.Unit)).OrderBy(z => z.Distance2D(familiar.Unit))
+                                .Where(x => x.IsAlive && x.IsAlly(familiar.Unit))
+                                .OrderBy(z => z.Distance2D(familiar.Unit))
                                 .FirstOrDefault();
                             if (friendlyTower != null)
                             {
@@ -181,11 +181,12 @@ namespace bemVisage.Core
             foreach (var familiar in Main.Updater.AllFamiliars)
             {
                 var barracks =
-                ObjectManager.GetEntitiesFast<Building>()
-                    .FirstOrDefault(
-                        unit =>
-                            unit.IsValid && unit.IsAlive && unit.Team != Owner.Team && !(unit is Tower) && familiar.Unit.IsValidOrbwalkingTarget(unit)
-                            && unit.Name != "portrait_world_unit");
+                    ObjectManager.GetEntitiesFast<Building>()
+                        .FirstOrDefault(
+                            unit =>
+                                unit.IsValid && unit.IsAlive && unit.Team != Owner.Team && !(unit is Tower) &&
+                                familiar.Unit.IsValidOrbwalkingTarget(unit)
+                                && unit.Name != "portrait_world_unit");
 
                 if (barracks != null)
                 {
@@ -195,7 +196,8 @@ namespace bemVisage.Core
                 var jungleCreep =
                     EntityManager<Creep>.Entities.FirstOrDefault(
                         unit =>
-                            unit.IsValid && unit.IsSpawned && unit.IsAlive && unit.IsNeutral && unit.Team != this.Owner.Team &&
+                            unit.IsValid && unit.IsSpawned && unit.IsAlive && unit.IsNeutral &&
+                            unit.Team != this.Owner.Team &&
                             familiar.Unit.IsValidOrbwalkingTarget(unit));
 
                 if (jungleCreep != null)
@@ -215,6 +217,7 @@ namespace bemVisage.Core
                 {
                     return creep;
                 }
+
                 var tower =
                     ObjectManager.GetEntitiesFast<Tower>()
                         .FirstOrDefault(
@@ -226,6 +229,7 @@ namespace bemVisage.Core
                 {
                     return tower;
                 }
+
                 var others =
                     ObjectManager.GetEntitiesFast<Unit>()
                         .FirstOrDefault(

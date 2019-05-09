@@ -22,6 +22,7 @@ namespace bemVisage
             {
                 orbwalker.Activate();
             }
+
             orbwalker.Settings.DrawHoldRange.Value = false;
             orbwalker.Settings.DrawRange.Value = false;
         }
@@ -63,7 +64,6 @@ namespace bemVisage
         {
             if (target == null)
             {
-
             }
             else
             {

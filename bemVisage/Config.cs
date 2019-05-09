@@ -17,11 +17,14 @@ namespace bemVisage
     public class Config : IDisposable
     {
         #region uselessstuf
+
         public bool disposed { get; set; }
         public MultiSleeper multiSleeper { get; }
         public BemVisage bemVisage { get; }
         public TaskHandler LinkenHandler { get; set; }
+
         #endregion
+
         #region MenuStuff
 
         public MenuFactory Factory { get; set; }
@@ -83,7 +86,7 @@ namespace bemVisage
             DrawInformationTab = Drawings.Item("Draw information tab", true);
 
             ComboKey.Item.ValueChanged += ComboKeyChanged;
-            var key = KeyInterop.KeyFromVirtualKey((int)ComboKey.Value.Key);
+            var key = KeyInterop.KeyFromVirtualKey((int) ComboKey.Value.Key);
             VisageOrbwalking = new VisageOrbwalking(key, this);
             bemVisage.Context.Orbwalker.RegisterMode(VisageOrbwalking);
         }
@@ -123,7 +126,7 @@ namespace bemVisage
                 return;
             }
 
-            var key = KeyInterop.KeyFromVirtualKey((int)keyCode);
+            var key = KeyInterop.KeyFromVirtualKey((int) keyCode);
             VisageOrbwalking.Key = key;
         }
 

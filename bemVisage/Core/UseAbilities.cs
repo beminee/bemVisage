@@ -109,10 +109,12 @@ namespace bemVisage.Core
         {
             try
             {
-                if (Game.IsPaused || !Owner.IsValid || !Owner.IsAlive || Owner.IsStunned() || Config.ComboKey || Owner.IsInvisible())
+                if (Game.IsPaused || !Owner.IsValid || !Owner.IsAlive || Owner.IsStunned() || Config.ComboKey ||
+                    Owner.IsInvisible())
                 {
                     return;
                 }
+
                 var soulAssumption = Main.SoulAssumption;
                 if (soulAssumption.CanBeCasted && soulAssumption.MaxCharges)
                 {

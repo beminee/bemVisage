@@ -25,11 +25,10 @@ using Config = bemVisage.Config;
 
 namespace bemVisage
 {
-    [ExportPlugin(name : "Private Visage", mode: StartupMode.Auto, units: HeroId.npc_dota_hero_visage)]
+    [ExportPlugin(name: "Private Visage", mode: StartupMode.Auto, units: HeroId.npc_dota_hero_visage)]
     public class BemVisage : Plugin
     {
-        [ImportMany]
-        private IEnumerable<IFeature> features;
+        [ImportMany] private IEnumerable<IFeature> features;
 
         public IServiceContext Context { get; }
         public IRendererManager RendererManager { get; set; }
@@ -50,101 +49,71 @@ namespace bemVisage
 
         public visage_soul_assumption SoulAssumption { get; set; }
 
-
-
         #endregion
+
         #region items
-        [ItemBinding]
-        public item_necronomicon Necronomicon1 { get; set; }
 
-        [ItemBinding]
-        public item_necronomicon_2 Necronomicon2 { get; set; }
+        [ItemBinding] public item_necronomicon Necronomicon1 { get; set; }
 
-        [ItemBinding]
-        public item_necronomicon_3 Necronomicon3 { get; set; }
+        [ItemBinding] public item_necronomicon_2 Necronomicon2 { get; set; }
 
-        [ItemBinding]
-        public item_dagon Dagon1 { get; set; }
+        [ItemBinding] public item_necronomicon_3 Necronomicon3 { get; set; }
 
-        [ItemBinding]
-        public item_dagon_2 Dagon2 { get; set; }
+        [ItemBinding] public item_dagon Dagon1 { get; set; }
 
-        [ItemBinding]
-        public item_dagon_3 Dagon3 { get; set; }
+        [ItemBinding] public item_dagon_2 Dagon2 { get; set; }
 
-        [ItemBinding]
-        public item_dagon_4 Dagon4 { get; set; }
+        [ItemBinding] public item_dagon_3 Dagon3 { get; set; }
 
-        [ItemBinding]
-        public item_dagon_5 Dagon5 { get; set; }
+        [ItemBinding] public item_dagon_4 Dagon4 { get; set; }
 
-        [ItemBinding]
-        public item_nullifier Nullifier { get; set; }
+        [ItemBinding] public item_dagon_5 Dagon5 { get; set; }
 
-        [ItemBinding]
-        public item_medallion_of_courage Medallion { get; set; }
+        [ItemBinding] public item_nullifier Nullifier { get; set; }
 
-        [ItemBinding]
-        public item_solar_crest SolarCrest { get; set; }
+        [ItemBinding] public item_medallion_of_courage Medallion { get; set; }
 
-        [ItemBinding]
-        public item_sheepstick Hex { get; set; }
+        [ItemBinding] public item_solar_crest SolarCrest { get; set; }
 
-        [ItemBinding]
-        public item_orchid Orchid { get; set; }
+        [ItemBinding] public item_sheepstick Hex { get; set; }
 
-        [ItemBinding]
-        public item_bloodthorn Bloodthorn { get; set; }
+        [ItemBinding] public item_orchid Orchid { get; set; }
 
-        [ItemBinding]
-        public item_cyclone Euls { get; set; }
+        [ItemBinding] public item_bloodthorn Bloodthorn { get; set; }
 
-        [ItemBinding]
-        public item_force_staff ForceStaff { get; set; }
+        [ItemBinding] public item_cyclone Euls { get; set; }
 
-        [ItemBinding]
-        public item_rod_of_atos RodOfAtos { get; set; }
+        [ItemBinding] public item_force_staff ForceStaff { get; set; }
 
-        [ItemBinding]
-        public item_heavens_halberd Halberd { get; set; }
+        [ItemBinding] public item_rod_of_atos RodOfAtos { get; set; }
 
-        [ItemBinding]
-        public item_ethereal_blade EtherealBlade { get; set; }
+        [ItemBinding] public item_heavens_halberd Halberd { get; set; }
 
-        [ItemBinding]
-        public item_blink Blink { get; set; }
-        
-        [ItemBinding]
-        public item_hurricane_pike HurricanePike { get; set; }
+        [ItemBinding] public item_ethereal_blade EtherealBlade { get; set; }
 
-        [ItemBinding]
-        public item_veil_of_discord VeilOfDiscord { get; set; }
+        [ItemBinding] public item_blink Blink { get; set; }
 
-        [ItemBinding]
-        public item_shivas_guard ShivasGuard { get; set; }
+        [ItemBinding] public item_hurricane_pike HurricanePike { get; set; }
 
-        [ItemBinding]
-        public item_urn_of_shadows UrnOfShadows { get; set; }
+        [ItemBinding] public item_veil_of_discord VeilOfDiscord { get; set; }
 
-        [ItemBinding]
-        public item_spirit_vessel SpiritVessel { get; set; }
+        [ItemBinding] public item_shivas_guard ShivasGuard { get; set; }
+
+        [ItemBinding] public item_urn_of_shadows UrnOfShadows { get; set; }
+
+        [ItemBinding] public item_spirit_vessel SpiritVessel { get; set; }
 
 
         public Necronomicon Necronomicon
         {
-            get
-            {
-                return Necronomicon1 ?? Necronomicon2 ?? (Necronomicon)Necronomicon3;
-            }
+            get { return Necronomicon1 ?? Necronomicon2 ?? (Necronomicon) Necronomicon3; }
         }
 
         public Dagon Dagon
         {
-            get
-            {
-                return Dagon1 ?? Dagon2 ?? Dagon3 ?? Dagon4 ?? (Dagon)Dagon5;
-            }
+            get { return Dagon1 ?? Dagon2 ?? Dagon3 ?? Dagon4 ?? (Dagon) Dagon5; }
         }
+
         #endregion
 
 
@@ -175,6 +144,7 @@ namespace bemVisage
                 feature.Activate(Config);
                 Log.Debug($"{feature.ToString()} activated.");
             }
+
             RendererManager.Draw += OnDraw;
         }
 
@@ -187,6 +157,7 @@ namespace bemVisage
             {
                 feature.Dispose();
             }
+
             Config?.Dispose();
             RendererManager.Draw -= OnDraw;
         }
@@ -195,13 +166,18 @@ namespace bemVisage
         {
             if (Config.DrawInformationTab)
             {
-                var startPos = new Vector2(Convert.ToSingle(Drawing.Width) - 130, Convert.ToSingle(Drawing.Height * 0.8));
+                var startPos = new Vector2(Convert.ToSingle(Drawing.Width) - 130,
+                    Convert.ToSingle(Drawing.Height * 0.8));
 
                 var combo = Config.ComboKey;
-                RendererManager.DrawText(startPos, "Combo" + " [" + Utils.KeyToText(Config.ComboKey.Item.GetValue<KeyBind>().Key) + "] " + (combo ? "ON" : "OFF"), combo ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red);
+                RendererManager.DrawText(startPos,
+                    "Combo" + " [" + Utils.KeyToText(Config.ComboKey.Item.GetValue<KeyBind>().Key) + "] " +
+                    (combo ? "ON" : "OFF"), combo ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red);
 
                 var lastHit = Config.LasthitKey;
-                RendererManager.DrawText(startPos + new Vector2(0, 30), "Last Hit" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " + (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red);
+                RendererManager.DrawText(startPos + new Vector2(0, 30),
+                    "Last Hit" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
+                    (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red);
             }
         }
 
@@ -221,6 +197,7 @@ namespace bemVisage
         {
             return Config.AbilitiesInCombo.GetValue<AbilityToggler>("Items: ").IsEnabled(id.ToString());
         }
+
         public bool IsLinkenBreakerEnabled(AbilityId id)
         {
             return Config.AbilitiesInCombo.GetValue<AbilityToggler>("Linken breaker: ").IsEnabled(id.ToString());
@@ -235,10 +212,12 @@ namespace bemVisage
         {
             return Config.AbilitiesInCombo.GetValue<AbilityToggler>("Abilities: ").IsEnabled(id.ToString());
         }
+
         public bool IsItemEnabled(ActiveAbility ability)
         {
             return IsItemEnabled(ability.Item.Id);
         }
+
         public bool IsLinkenBreakerEnabled(ActiveAbility ability)
         {
             return IsLinkenBreakerEnabled(ability.Item.Id);

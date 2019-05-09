@@ -36,11 +36,9 @@ namespace bemVisage
             if (!LaneCache.ContainsKey(unit))
             {
                 LaneCache.Add(unit, GetPath(unit));
-                UpdateManager.BeginInvoke(() =>
-                {
-                    LaneCache.Remove(unit);
-                }, 150);
+                UpdateManager.BeginInvoke(() => { LaneCache.Remove(unit); }, 150);
             }
+
             return LaneCache[unit];
         }
 
@@ -98,42 +96,52 @@ namespace bemVisage
             {
                 return MapArea.Top;
             }
+
             if (Map.Middle.IsInside(pos))
             {
                 return MapArea.Middle;
             }
+
             if (Map.Bottom.IsInside(pos))
             {
                 return MapArea.Bottom;
             }
+
             if (Map.River.IsInside(pos))
             {
                 return MapArea.River;
             }
+
             if (Map.RadiantBase.IsInside(pos))
             {
                 return MapArea.RadiantBase;
             }
+
             if (Map.DireBase.IsInside(pos))
             {
                 return MapArea.DireBase;
             }
+
             if (Map.Roshan.IsInside(pos))
             {
                 return MapArea.RoshanPit;
             }
+
             if (Map.DireBottomJungle.IsInside(pos))
             {
                 return MapArea.DireBottomJungle;
             }
+
             if (Map.DireTopJungle.IsInside(pos))
             {
                 return MapArea.DireTopJungle;
             }
+
             if (Map.RadiantBottomJungle.IsInside(pos))
             {
                 return MapArea.RadiantBottomJungle;
             }
+
             if (Map.RadiantTopJungle.IsInside(pos))
             {
                 return MapArea.RadiantTopJungle;

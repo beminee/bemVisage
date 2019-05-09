@@ -16,26 +16,19 @@ namespace bemVisage.Abilities
         {
         }
 
-        public float Radius 
+        public float Radius
         {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("stun_radius");
-            }
+            get { return this.Ability.GetAbilitySpecialData("stun_radius"); }
         }
 
         public override int GetCastDelay()
         {
-            return (int)(this.Ability.GetAbilitySpecialData("stun_delay") * 1000f) + (int)Game.Ping;
+            return (int) (this.Ability.GetAbilitySpecialData("stun_delay") * 1000f) + (int) Game.Ping;
         }
 
         public float StunDuration
         {
-            get
-            {
-                return this.Ability.GetAbilitySpecialData("stun_duration") * 1000 - 200;
-            }
+            get { return this.Ability.GetAbilitySpecialData("stun_duration") * 1000 - 200; }
         }
     }
-    
 }

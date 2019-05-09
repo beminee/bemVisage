@@ -72,7 +72,6 @@ namespace bemVisage.Core
         }
 
 
-
         private async Task ExecuteAsync(CancellationToken token)
         {
             try
@@ -83,8 +82,9 @@ namespace bemVisage.Core
                 }
 
                 var familiars = Main.Updater.AllFamiliars;
-                var courier = EntityManager<Unit>.Entities.FirstOrDefault(x => x.IsValid && x.IsAlive && !x.IsInvulnerable() && x.Team != Main.Context.Owner.Team &&
-                                                                               x.NetworkName == "CDOTA_Unit_Courier");
+                var courier = EntityManager<Unit>.Entities.FirstOrDefault(x =>
+                    x.IsValid && x.IsAlive && !x.IsInvulnerable() && x.Team != Main.Context.Owner.Team &&
+                    x.NetworkName == "CDOTA_Unit_Courier");
 
                 foreach (var familiar in familiars)
                 {
@@ -95,7 +95,8 @@ namespace bemVisage.Core
                     }
 
                     var familiarsStoneForm = familiar.StoneForm;
-                    if (familiar.Unit.Health * 100 / familiar.Unit.MaximumHealth <= FamiliarHPThreshold && familiarsStoneForm.CanBeCasted)
+                    if (familiar.Unit.Health * 100 / familiar.Unit.MaximumHealth <= FamiliarHPThreshold &&
+                        familiarsStoneForm.CanBeCasted)
                     {
                         familiarsStoneForm.UseAbility();
                         await Task.Delay(familiarsStoneForm.GetCastDelay(), token);

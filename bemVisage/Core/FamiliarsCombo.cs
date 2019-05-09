@@ -38,6 +38,7 @@ namespace bemVisage.Core
             {
                 Handler?.Cancel();
             }
+
             Config.ComboKey.PropertyChanged -= ComboPropertyChanged;
             Config.FamiliarsLock.PropertyChanged -= FamiliarsLockPropertyChanged;
         }
@@ -58,7 +59,7 @@ namespace bemVisage.Core
                 Config.FollowKey.Item.SetValue(new KeyBind(Config.FollowKey.Value, KeyBindType.Toggle));
             }
 
-            
+
             FamiliarsFollow = Factory.Item("Follow Mouse", true);
 
             Config.ComboKey.PropertyChanged += ComboPropertyChanged;
@@ -134,11 +135,15 @@ namespace bemVisage.Core
                     {
                         var graveChillDebuff = target.HasModifier(Main.GraveChill.TargetModifierName);
                         var stunDebuff =
-                            target.Modifiers.Any(x => x != null && x.IsValid && x.IsStunDebuff && x.RemainingTime > 0.5f);
+                            target.Modifiers.Any(
+                                x => x != null && x.IsValid && x.IsStunDebuff && x.RemainingTime > 0.5f);
                         var hexDebuff = target.Modifiers.Any(x => x != null &&
-                            x.IsValid && x.Name == "modifier_sheepstick_debuff" && x.RemainingTime > 0.5f);
+                                                                  x.IsValid && x.Name == "modifier_sheepstick_debuff" &&
+                                                                  x.RemainingTime > 0.5f);
                         var atosDebuff = target.Modifiers.Any(x => x != null &&
-                            x.IsValid && x.Name == "modifier_rod_of_atos_debuff" && x.RemainingTime > 0.5f);
+                                                                   x.IsValid &&
+                                                                   x.Name == "modifier_rod_of_atos_debuff" &&
+                                                                   x.RemainingTime > 0.5f);
                         var familiarsStoneForm = familiar.StoneForm;
 
                         if (!target.IsInvulnerable() && !target.IsAttackImmune())
@@ -154,7 +159,8 @@ namespace bemVisage.Core
                                     familiarsStoneForm.StunDuration,
                                     "FamiliarsStoneForm");
                                 await Task.Delay(
-                                    (int)(familiarsStoneForm.Ability.GetAbilitySpecialData("stun_delay") * 1000 + Game.Ping),
+                                    (int) (familiarsStoneForm.Ability.GetAbilitySpecialData("stun_delay") * 1000 +
+                                           Game.Ping),
                                     token);
                             }
                         }
@@ -170,11 +176,11 @@ namespace bemVisage.Core
                         {
                             familiar.FamiliarMovementManager.Orbwalk(target);
                         }
+
                         //Main.Log.Debug($"{target != null}");
                         //Main.Log.Debug($"{!target.IsInvulnerable() && !target.IsAttackImmune()}");
                         //familiar.FamiliarMovementManager.Orbwalk(target);
                         //familiarsStoneForm.UseAbility();
-
                     }
                     else
                     {

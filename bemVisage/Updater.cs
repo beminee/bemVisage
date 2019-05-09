@@ -26,7 +26,9 @@ namespace bemVisage
         {
             get
             {
-                return allFamiliars.Values.Where(x => x.Unit.IsValid && x.Unit.IsAlive && x.Unit.Team == _main.Context.Owner.Team && x.Unit.IsControllable);
+                return allFamiliars.Values.Where(x =>
+                    x.Unit.IsValid && x.Unit.IsAlive && x.Unit.Team == _main.Context.Owner.Team &&
+                    x.Unit.IsControllable);
             }
         }
 
@@ -55,7 +57,8 @@ namespace bemVisage
 
         private void EntityManagerOnEntityAdded(object sender, Unit unit)
         {
-            if (!unit.IsValid || !unit.NetworkName.Contains("CDOTA_Unit_VisageFamiliar") || unit.Team != _main.Context.Owner.Team)
+            if (!unit.IsValid || !unit.NetworkName.Contains("CDOTA_Unit_VisageFamiliar") ||
+                unit.Team != _main.Context.Owner.Team)
             {
                 return;
             }
@@ -82,5 +85,4 @@ namespace bemVisage
             allFamiliars.Clear();
         }
     }
-
 }

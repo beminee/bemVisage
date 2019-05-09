@@ -76,13 +76,15 @@ namespace bemVisage
             if ((!Config.BmBehavior || !target.HasModifier("modifier_item_blade_mail_reflect")))
             {
                 var stunDebuff = target.Modifiers.FirstOrDefault(x => x != null && x.IsValid && x.IsStunDebuff);
-                var hexDebuff = target.Modifiers.FirstOrDefault(x => x != null && x.IsValid && x.Name == "modifier_sheepstick_debuff");
-                var atosDebuff = target.Modifiers.FirstOrDefault(x => x != null && x.IsValid && x.Name == "modifier_rod_of_atos_debuff");
+                var hexDebuff = target.Modifiers.FirstOrDefault(x =>
+                    x != null && x.IsValid && x.Name == "modifier_sheepstick_debuff");
+                var atosDebuff = target.Modifiers.FirstOrDefault(x =>
+                    x != null && x.IsValid && x.Name == "modifier_rod_of_atos_debuff");
                 var modifierHurricanePike = Owner.HasModifier("modifier_item_hurricane_pike_range");
 
                 var blink = Main.Blink;
                 if (blink != null
-                    && Main.IsItemEnabled(blink) 
+                    && Main.IsItemEnabled(blink)
                     && Owner.Distance2D(Game.MousePosition) > Config.BlinkDistance2Mouse
                     && Owner.Distance2D(target) > 600
                     && blink.CanBeCasted)
@@ -136,8 +138,10 @@ namespace bemVisage
                             && Main.IsItemEnabled(nullifier)
                             && nullifier.CanBeCasted
                             && nullifier.CanHit(target)
-                            && (stunDebuff == null || !stunDebuff.IsValid || stunDebuff.RemainingTime <= nullifier.GetHitTime(target) + 0.2f)
-                            && (hexDebuff == null || !hexDebuff.IsValid || hexDebuff.RemainingTime <= nullifier.GetHitTime(target) + 0.2f))
+                            && (stunDebuff == null || !stunDebuff.IsValid ||
+                                stunDebuff.RemainingTime <= nullifier.GetHitTime(target) + 0.2f)
+                            && (hexDebuff == null || !hexDebuff.IsValid ||
+                                hexDebuff.RemainingTime <= nullifier.GetHitTime(target) + 0.2f))
                         {
                             nullifier.UseAbility(target);
                             await Task.Delay(nullifier.GetCastDelay(target), token);
@@ -148,8 +152,10 @@ namespace bemVisage
                             && Main.IsItemEnabled(rodofAtos)
                             && rodofAtos.CanBeCasted
                             && rodofAtos.CanHit(target)
-                            && (stunDebuff == null || !stunDebuff.IsValid || stunDebuff.RemainingTime <= rodofAtos.GetHitTime(target) + 0.2f)
-                            && (atosDebuff == null || !atosDebuff.IsValid || atosDebuff.RemainingTime <= rodofAtos.GetHitTime(target) + 0.2f))
+                            && (stunDebuff == null || !stunDebuff.IsValid ||
+                                stunDebuff.RemainingTime <= rodofAtos.GetHitTime(target) + 0.2f)
+                            && (atosDebuff == null || !atosDebuff.IsValid ||
+                                atosDebuff.RemainingTime <= rodofAtos.GetHitTime(target) + 0.2f))
                         {
                             rodofAtos.UseAbility(target);
                             await Task.Delay(rodofAtos.GetCastDelay(target), token);
@@ -278,6 +284,7 @@ namespace bemVisage
                     {
                         Config.LinkenHandler.RunAsync();
                     }
+
                     var necronomicon = Main.Necronomicon;
                     if (necronomicon != null
                         && Main.IsItemEnabled(AbilityId.item_necronomicon_3)
@@ -297,7 +304,10 @@ namespace bemVisage
         private void OnUpdate()
         {
             if (Config.TargetOption.Value.SelectedValue.Contains("Lock") && TargetSelector.IsActive
-            && (!Config.ComboKey || Config.Target == null || !Config.Target.IsValid || !Config.Target.IsAlive))
+                                                                         && (!Config.ComboKey ||
+                                                                             Config.Target == null ||
+                                                                             !Config.Target.IsValid ||
+                                                                             !Config.Target.IsAlive))
             {
                 Config.Target = TargetSelector.GetTargets().FirstOrDefault() as Hero;
             }
@@ -307,7 +317,8 @@ namespace bemVisage
             }
 
             if (TargetSelector.IsActive
-                && (!this.Config.FamiliarMenu.GetValue<KeyBind>("Familiars Target Lock").Active || Config.FamiliarTarget == null || !Config.FamiliarTarget.IsValid || !Config.FamiliarTarget.IsAlive))
+                && (!this.Config.FamiliarMenu.GetValue<KeyBind>("Familiars Target Lock").Active ||
+                    Config.FamiliarTarget == null || !Config.FamiliarTarget.IsValid || !Config.FamiliarTarget.IsAlive))
             {
                 Config.FamiliarTarget = TargetSelector.GetTargets().FirstOrDefault() as Hero;
             }
@@ -342,7 +353,8 @@ namespace bemVisage
 
             if (Config.ComboKey && (Config.Target != null) && this.Config.DrawTargetIndicator)
             {
-                this.Context.Particle.DrawTargetLine(this.Owner, "TargetIndicator", Config.Target.NetworkPosition, Color.Red);
+                this.Context.Particle.DrawTargetLine(this.Owner, "TargetIndicator", Config.Target.NetworkPosition,
+                    Color.Red);
             }
             else
             {
@@ -351,13 +363,13 @@ namespace bemVisage
 
             if (Config.FamiliarsLock && (Config.FamiliarTarget != null) && this.Config.DrawTargetIndicator)
             {
-                this.Context.Particle.DrawTargetLine(Main.Updater.AllFamiliars.First().Unit, "FamiliarTargetIndicator", Config.FamiliarTarget.NetworkPosition, Color.Yellow);
+                this.Context.Particle.DrawTargetLine(Main.Updater.AllFamiliars.First().Unit, "FamiliarTargetIndicator",
+                    Config.FamiliarTarget.NetworkPosition, Color.Yellow);
             }
             else
             {
                 this.Context.Particle.Remove("FamiliarTargetIndicator");
             }
         }
-
     }
 }

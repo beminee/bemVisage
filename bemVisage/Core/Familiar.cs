@@ -69,5 +69,4 @@ namespace bemVisage.Core
             return Handle;
         }
     }
-
 }

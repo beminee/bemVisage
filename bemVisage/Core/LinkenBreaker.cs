@@ -23,6 +23,7 @@ namespace bemVisage.Core
         private MenuFactory Factory { get; set; }
 
         public MenuItem<PriorityChanger> LinkenBreakerPriorityMenu { get; set; }
+
         public void Dispose()
         {
             Config.LinkenHandler?.Cancel();
@@ -37,17 +38,17 @@ namespace bemVisage.Core
 
             LinkenBreakerPriorityMenu = Factory.Item("Priority: ", new PriorityChanger(new List<string>
             {
-                { "item_ethereal_blade" },
-                { "visage_soul_assumption" },
-                { "visage_grave_chill" },
-                { "item_sheepstick" },
-                { "item_rod_of_atos" },
-                { "item_nullifier" },
-                { "item_bloodthorn" },
-                { "item_orchid" },
-                { "item_heavens_halberd" },
-                { "item_cyclone" },
-                { "item_force_staff" }
+                {"item_ethereal_blade"},
+                {"visage_soul_assumption"},
+                {"visage_grave_chill"},
+                {"item_sheepstick"},
+                {"item_rod_of_atos"},
+                {"item_nullifier"},
+                {"item_bloodthorn"},
+                {"item_orchid"},
+                {"item_heavens_halberd"},
+                {"item_cyclone"},
+                {"item_force_staff"}
             }));
 
             main.LinkenHandler = UpdateManager.Run(ExecuteAsync, false, false);
@@ -117,7 +118,8 @@ namespace bemVisage.Core
                             && nullifier.CanBeCasted && nullifier.CanHit(Config.Target))
                         {
                             nullifier.UseAbility(Config.Target);
-                            await Task.Delay(nullifier.GetCastDelay(Config.Target) + nullifier.GetHitTime(Config.Target), token);
+                            await Task.Delay(
+                                nullifier.GetCastDelay(Config.Target) + nullifier.GetHitTime(Config.Target), token);
                             return;
                         }
 

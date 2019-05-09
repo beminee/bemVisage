@@ -69,6 +69,7 @@ namespace bemVisage.Core
                     await Task.Delay(125, token);
                     return;
                 }
+
                 var target = EntityManager<Hero>.Entities.FirstOrDefault(
                     x => x.IsAlive
                          && (x.Team != this.Owner.Team)
@@ -90,8 +91,8 @@ namespace bemVisage.Core
                         Config.LinkenHandler.RunAsync();
                         return;
                     }
-                    
                 }
+
                 await Task.Delay(125, token);
             }
             catch (TaskCanceledException)
