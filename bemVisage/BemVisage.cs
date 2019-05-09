@@ -196,6 +196,11 @@ namespace bemVisage
                     "Lane Push" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
                     (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
+                var follow = Config.FollowKey;
+                RendererManager.DrawText(startPos + new Vector2(0, 60),
+                    "Follow" + " [" + Utils.KeyToText(Config.FollowKey.Item.GetValue<KeyBind>().Key) + "] " +
+                    (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
+
                 //if (Config.ComboKey && Config.Target != null)
                 //{
                 //    RendererManager.DrawTexture($"{Config.Target.Name}", new SharpDX.RectangleF(startPos.X, startPos.Y - 90, 150, 85));
