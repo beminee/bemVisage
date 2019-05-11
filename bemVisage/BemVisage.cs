@@ -36,8 +36,8 @@ namespace bemVisage
 
         public IServiceContext Context { get; }
         public IRendererManager RendererManager { get; set; }
-        private ITextureManager TextureManager { get; set; }
-        private List<string> LoadedHeroes { get; set; }
+        //private ITextureManager TextureManager { get; set; }
+        //private List<string> LoadedHeroes { get; set; }
 
         private AbilityFactory AbilityFactory { get; }
 
@@ -128,7 +128,6 @@ namespace bemVisage
         {
             Context = context;
             RendererManager = context.Renderer;
-            TextureManager = context.TextureManager;
             AbilityFactory = context.AbilityFactory;
         }
 
@@ -142,9 +141,9 @@ namespace bemVisage
 
             Config = new Config(this);
 
-            Updater = new Updater(this);
-
             LaneHelper = new LaneHelper(this);
+
+            Updater = new Updater(this);
 
             //if (EntityManager<Hero>.Entities.Any(x => x != null && x.IsValid && UnitExtensions.IsEnemy(x, this.Context.Owner)))
             //{
@@ -199,7 +198,7 @@ namespace bemVisage
                 var follow = Config.FollowKey;
                 RendererManager.DrawText(startPos + new Vector2(0, 60),
                     "Follow" + " [" + Utils.KeyToText(Config.FollowKey.Item.GetValue<KeyBind>().Key) + "] " +
-                    (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
+                    (follow ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
                 //if (Config.ComboKey && Config.Target != null)
                 //{

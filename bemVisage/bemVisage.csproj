@@ -107,6 +107,8 @@
     <Compile Include="Core\AutoKillstealer.cs" />
     <Compile Include="Core\FamiliarsGeneralControl.cs" />
     <Compile Include="Core\LinkenBreaker.cs" />
+    <Compile Include="Core\OtherUnits.cs" />
+    <Compile Include="Core\UnitCombo.cs" />
     <Compile Include="Core\UseAbilities.cs" />
     <Compile Include="FamiliarMovementManager.cs" />
     <Compile Include="LaneHelper.cs" />

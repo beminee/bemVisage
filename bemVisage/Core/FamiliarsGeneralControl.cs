@@ -82,6 +82,7 @@ namespace bemVisage.Core
                 }
 
                 var familiars = Main.Updater.AllFamiliars;
+                var units = Main.Updater.AllOtherUnits;
                 var courier = EntityManager<Unit>.Entities.FirstOrDefault(x =>
                     x.IsValid && x.IsAlive && !x.IsInvulnerable() && x.Team != Main.Context.Owner.Team &&
                     x.NetworkName == "CDOTA_Unit_Courier");
@@ -109,6 +110,15 @@ namespace bemVisage.Core
                         {
                             familiar.FamiliarMovementManager.Orbwalk(courier);
                         }
+                    }
+                }
+
+                foreach (var unit in units)
+                {
+                    if (Config.FollowKey)
+                    {
+                        unit.Unit.Follow(this.Owner);
+                        await Task.Delay(250, token);
                     }
                 }
             }

@@ -318,7 +318,7 @@ namespace bemVisage
             }
 
             if (TargetSelector.IsActive
-                && (!this.Config.FamiliarMenu.GetValue<KeyBind>("Familiars Target Lock").Active ||
+                && (!this.Config.FamiliarMenu.GetValue<KeyBind>("Units Target Lock").Active ||
                     Config.FamiliarTarget == null || !Config.FamiliarTarget.IsValid || !Config.FamiliarTarget.IsAlive))
             {
                 Config.FamiliarTarget = TargetSelector.GetTargets().FirstOrDefault() as Hero;

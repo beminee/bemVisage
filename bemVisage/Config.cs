@@ -49,9 +49,10 @@ namespace bemVisage
         public MenuItem<bool> BmBehavior { get; }
         public MenuItem<Slider> BlinkDistance2Mouse { get; set; }
         public MenuItem<Slider> BlinkDistance2Enemy { get; set; }
+        public MenuItem<Slider> MinimumDistanceToOrbwalker { get; set; }
         public MenuItem<bool> SoulAssumptionDraw { get; set; }
         public MenuItem<bool> GraveChillsDraw { get; set; }
-        public MenuItem<bool> DrawTargetIndicator { get; set; }
+        public MenuItem<bool> DrawTargetIndicator { get; set; } 
         public MenuItem<bool> DrawInformationTab { get; set; }
 
         public MenuItem<Slider> TextSize { get; set; }
@@ -69,15 +70,15 @@ namespace bemVisage
             Drawings = Factory.Menu("Drawings");
             LinkenBreaker = AbilitiesInCombo.Menu("Linken Breaker");
             ComboMenu = AbilitiesInCombo.Menu("Combo Menu");
-            FamiliarMenu = Factory.Menu("Familiar Menu");
+            FamiliarMenu = Factory.Menu("Unit Menu");
             ComboKey = ComboMenu.Item("Combo", new KeyBind(32));
             TargetOption = ComboMenu.Item("Target Option", new StringList("Lock", "Default"));
             BmBehavior = ComboMenu.Item("Keep combo if Blade Mail", false);
-            BlinkDistance2Mouse = ComboMenu.Item("Blink Distance to Mouse", new Slider(800, 0, 1200));
+            BlinkDistance2Mouse = ComboMenu.Item("Blink Distance to Mouse", new Slider(600, 0, 1200));
             BlinkDistance2Enemy = ComboMenu.Item("Blink Distance to Enemy", new Slider(250, 0, 550));
 
 
-            FamiliarsLock = FamiliarMenu.Item("Familiars Target Lock", new KeyBind('E', KeyBindType.Toggle, false));
+            FamiliarsLock = FamiliarMenu.Item("Units Target Lock", new KeyBind('E', KeyBindType.Toggle, false));
             FollowKey = FamiliarMenu.Item("Follow Key", new KeyBind('F', KeyBindType.Toggle, false));
 
             LasthitKey = LanePushing.Item("Lane Push Key", new KeyBind('D', KeyBindType.Toggle, false));
@@ -106,12 +107,6 @@ namespace bemVisage
             if (!targetSelector.IsActive)
             {
                 targetSelector.Activate();
-            }
-
-            var prediction = bemVisage.Context.Prediction;
-            if (!prediction.IsActive)
-            {
-                prediction.Activate();
             }
         }
 

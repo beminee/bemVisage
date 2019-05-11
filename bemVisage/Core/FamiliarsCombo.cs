@@ -23,7 +23,6 @@ namespace bemVisage.Core
     internal class FamiliarsCombo : IFeature
     {
         private Config Config { get; set; }
-        private ITargetSelector TargetSelector { get; set; }
         private BemVisage Main { get; set; }
         private MultiSleeper MultiSleeper { get; set; }
         private Unit Owner { get; set; }
@@ -50,7 +49,6 @@ namespace bemVisage.Core
             MultiSleeper = Config.multiSleeper;
             Main = main.bemVisage;
             Owner = main.bemVisage.Context.Owner;
-            TargetSelector = main.bemVisage.Context.TargetSelector;
 
             Handler = UpdateManager.Run(ExecuteAsync, true, false);
 
@@ -116,8 +114,6 @@ namespace bemVisage.Core
                     return;
                 }
 
-                var familiars = Main.Updater.AllFamiliars;
-
                 Hero target = null;
 
                 if (Config.FamiliarsLock)
@@ -163,6 +159,7 @@ namespace bemVisage.Core
                                            Game.Ping),
                                     token);
                             }
+                            familiar.FamiliarMovementManager.Orbwalk(target);
                         }
 
                         if (target.IsInvulnerable() || target.IsAttackImmune())
@@ -171,7 +168,7 @@ namespace bemVisage.Core
                         }
                         else if (!Main.IsAbilityEnabled(familiarsStoneForm.Ability.Id)
                                  || target.IsMagicImmune()
-                                 || familiarsStoneForm.CanBeCasted
+                                 || !familiarsStoneForm.CanBeCasted
                                  || graveChillDebuff || stunDebuff || hexDebuff || atosDebuff)
                         {
                             familiar.FamiliarMovementManager.Orbwalk(target);
