@@ -198,7 +198,7 @@ namespace bemVisage
                 var follow = Config.FollowKey;
                 RendererManager.DrawText(startPos + new Vector2(0, 60),
                     "Follow" + " [" + Utils.KeyToText(Config.FollowKey.Item.GetValue<KeyBind>().Key) + "] " +
-                    (follow ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
+                    (follow ? "ON" : "OFF"), follow ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
                 //if (Config.ComboKey && Config.Target != null)
                 //{
