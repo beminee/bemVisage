@@ -144,6 +144,7 @@ namespace bemVisage.Core
 
                         if (!target.IsInvulnerable() && !target.IsAttackImmune())
                         {
+                            Main.Log.Debug($"{familiar.Unit.Distance2D(target)}");
                             if (Main.IsAbilityEnabled(familiarsStoneForm.Ability.Id)
                                 && familiarsStoneForm.CanBeCasted
                                 && familiar.Unit.Distance2D(target) <= 100
@@ -159,7 +160,18 @@ namespace bemVisage.Core
                                            Game.Ping),
                                     token);
                             }
-                            familiar.FamiliarMovementManager.Orbwalk(target);
+                            else if (Main.IsAbilityEnabled(familiarsStoneForm.Ability.Id)
+                                     && familiarsStoneForm.CanBeCasted
+                                     && familiar.Unit.Distance2D(target) > 120
+                                     && !graveChillDebuff && !stunDebuff && !hexDebuff && !atosDebuff
+                                     && !MultiSleeper.Sleeping("FamiliarsStoneForm"))
+                            {
+                                familiar.FamiliarMovementManager.Move(target.InFront(50));
+                            }
+                            //else
+                            //{
+                            //    familiar.FamiliarMovementManager.Orbwalk(target);
+                            //}
                         }
 
                         if (target.IsInvulnerable() || target.IsAttackImmune())
