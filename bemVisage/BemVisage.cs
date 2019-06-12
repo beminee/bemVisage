@@ -36,8 +36,6 @@ namespace bemVisage
 
         public IServiceContext Context { get; }
         public IRendererManager RendererManager { get; set; }
-        //private ITextureManager TextureManager { get; set; }
-        //private List<string> LoadedHeroes { get; set; }
 
         private AbilityFactory AbilityFactory { get; }
 
@@ -145,21 +143,11 @@ namespace bemVisage
 
             Updater = new Updater(this);
 
-            //if (EntityManager<Hero>.Entities.Any(x => x != null && x.IsValid && UnitExtensions.IsEnemy(x, this.Context.Owner)))
-            //{
-            //    foreach (var hero in EntityManager<Hero>.Entities)
-            //    {
-            //        //AddTexture(hero);
-            //        Log.Debug($"{hero.Name}");
-            //    }
-            //}
-
             foreach (var feature in features)
             {
                 feature.Activate(Config);
                 Log.Debug($"{feature.ToString()} activated.");
             }
-            //EntityManager<Hero>.EntityAdded += EntityManagerOnEntityAdded;
             RendererManager.Draw += OnDraw;
         }
 
@@ -174,7 +162,6 @@ namespace bemVisage
             }
 
             Config?.Dispose();
-            //EntityManager<Hero>.EntityAdded -= EntityManagerOnEntityAdded;
             RendererManager.Draw -= OnDraw;
         }
 
@@ -182,30 +169,55 @@ namespace bemVisage
         {
             if (Config.DrawInformationTab)
             {
-                var startPos = new Vector2(Convert.ToSingle(Drawing.Width) - 175,
-                    Convert.ToSingle(Drawing.Height * 0.8));
+                try
+                {
+                    var startPos = new Vector2(this.Config.PosX.Value, this.Config.PosY.Value);
 
-                var combo = Config.ComboKey;
-                RendererManager.DrawText(startPos,
-                    "Combo" + " [" + Utils.KeyToText(Config.ComboKey.Item.GetValue<KeyBind>().Key) + "] " +
-                    (combo ? "ON" : "OFF"), combo ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
+                    var combo = Config.ComboKey;
+                    RendererManager.DrawText(startPos,
+                        "Combo" + " [" + Utils.KeyToText(Config.ComboKey.Item.GetValue<KeyBind>().Key) + "] " +
+                        (combo ? "ON" : "OFF"), combo ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
-                var lastHit = Config.LasthitKey;
-                RendererManager.DrawText(startPos + new Vector2(0, 30),
-                    "Lane Push" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
-                    (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
+                    var lastHit = Config.LasthitKey;
+                    RendererManager.DrawText(startPos + new Vector2(0, 30),
+                        "Lane Push" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
+                        (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
-                var follow = Config.FollowKey;
-                RendererManager.DrawText(startPos + new Vector2(0, 60),
-                    "Follow" + " [" + Utils.KeyToText(Config.FollowKey.Item.GetValue<KeyBind>().Key) + "] " +
-                    (follow ? "ON" : "OFF"), follow ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
+                    var follow = Config.FollowKey;
+                    RendererManager.DrawText(startPos + new Vector2(0, 60),
+                        "Follow" + " [" + Utils.KeyToText(Config.FollowKey.Item.GetValue<KeyBind>().Key) + "] " +
+                        (follow ? "ON" : "OFF"), follow ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
-                //if (Config.ComboKey && Config.Target != null)
-                //{
-                //    RendererManager.DrawTexture($"{Config.Target.Name}", new SharpDX.RectangleF(startPos.X, startPos.Y - 90, 150, 85));
-                //    RendererManager.DrawRectangle(new SharpDX.RectangleF(startPos.X, startPos.Y - 30, 155, 155), System.Drawing.Color.Red);
-                //}
+                    if (Config.FamiliarTarget != null)
+                    {
+                        var hero = LoadHeroTexture(Config.FamiliarTarget.HeroId);
+                        RendererManager.DrawTexture(Config.FamiliarTarget.HeroId.ToString(), new RectangleF(startPos.X + 25, startPos.Y - 75, 100, 66));
+                        RendererManager.DrawRectangle(new RectangleF(startPos.X + 22, startPos.Y - 77, 103, 69),
+                            this.Config.FamiliarsLock.Item.IsActive() ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, 3f);
+                    }
+                    else
+                    {
+                        var hero = RendererManager.TextureManager.LoadFromDota($"default", $@"panorama/images/heroes/npc_dota_hero_default_png.vtex_c");
+
+                        RendererManager.DrawTexture("default", new RectangleF(startPos.X + 25, startPos.Y - 75, 100, 66));
+                        RendererManager.DrawRectangle(new RectangleF(startPos.X + 22, startPos.Y - 77, 103, 69),
+                            this.Config.FamiliarsLock.Item.IsActive() ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, 3f);
+                    }
+                }
+                catch
+                {
+                    // Works correctly but takes some time to load the texture and throws exception in the meantime. Since there's no "IsTextureLoaded" kind of thing,
+                    // surpressing all errors make sense, I guess. 
+                    // todo: load textures onactivate and on hero visible, add them to an array and don't load it twice.
+                }
             }
+        }
+
+        public async Task<bool> LoadHeroTexture(HeroId id)
+        {
+             var skraa = RendererManager.TextureManager.LoadFromDota($"{id}", $@"panorama/images/heroes/{id}_png.vtex_c");
+             await Task.Delay(150);
+             return skraa;
         }
 
 
@@ -220,23 +232,6 @@ namespace bemVisage
 
             return true;
         }
-
-        //private void EntityManagerOnEntityAdded(object sender, Hero unit)
-        //{
-        //    AddTexture(unit);
-        //}
-
-        //private void AddTexture(Hero hero)
-        //{
-        //    if (LoadedHeroes.Contains(hero.Name) || hero.Team == this.Context.Owner.Team)
-        //    {
-        //        return;
-        //    }
-
-        //    TextureManager.LoadFromDota($"{hero.Name}", $"panorama/images/heroes/{hero.Name}_png.vtex_c");
-        //    Log.Debug($"Loaded {hero.Name} texture");
-        //    LoadedHeroes.Add(hero.Name);
-        //}
 
         public bool IsItemEnabled(AbilityId id)
         {

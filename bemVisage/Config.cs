@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
@@ -54,6 +55,8 @@ namespace bemVisage
         public MenuItem<bool> GraveChillsDraw { get; set; }
         public MenuItem<bool> DrawTargetIndicator { get; set; } 
         public MenuItem<bool> DrawInformationTab { get; set; }
+        public MenuItem<Slider> PosX { get; set; }
+        public MenuItem<Slider> PosY { get; set; }
 
         public MenuItem<Slider> TextSize { get; set; }
 
@@ -88,8 +91,11 @@ namespace bemVisage
             DrawTargetIndicator = Drawings.Item("Draw target indicator", true);
             DrawInformationTab = Drawings.Item("Draw information tab", true);
             TextSize = Drawings.Item("Text size", new Slider(13, 1, 100));
+            PosX = Drawings.Item("Drawing X", new Slider(1750, 0, 1800));
+            PosY = Drawings.Item("Drawing Y", new Slider(850, 0, 1800));
 
             ComboKey.Item.ValueChanged += ComboKeyChanged;
+            ComboKey.PropertyChanged += ComboKeyPropertyChanged;
             var key = KeyInterop.KeyFromVirtualKey((int) ComboKey.Value.Key);
             VisageOrbwalking = new VisageOrbwalking(key, this);
             bemVisage.Context.Orbwalker.RegisterMode(VisageOrbwalking);
@@ -126,6 +132,15 @@ namespace bemVisage
 
             var key = KeyInterop.KeyFromVirtualKey((int) keyCode);
             VisageOrbwalking.Key = key;
+        }
+
+        private void ComboKeyPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (this.ComboKey.Item.IsActive())
+            {
+                FollowKey.Item.SetValue(new KeyBind(FollowKey.Value, KeyBindType.Toggle));
+                LasthitKey.Item.SetValue(new KeyBind(LasthitKey.Value, KeyBindType.Toggle));
+            }
         }
 
 

@@ -144,7 +144,6 @@ namespace bemVisage.Core
 
                         if (!target.IsInvulnerable() && !target.IsAttackImmune())
                         {
-                            Main.Log.Debug($"{familiar.Unit.Distance2D(target)}");
                             if (Main.IsAbilityEnabled(familiarsStoneForm.Ability.Id)
                                 && familiarsStoneForm.CanBeCasted
                                 && familiar.Unit.Distance2D(target) <= 100

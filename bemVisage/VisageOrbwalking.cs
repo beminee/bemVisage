@@ -360,6 +360,7 @@ namespace bemVisage
             else
             {
                 this.Context.Particle.Remove("TargetIndicator");
+
             }
 
             if (Config.FamiliarsLock && (Config.FamiliarTarget != null) && Main.Updater.AllFamiliars.Count() > 0 && this.Config.DrawTargetIndicator)
