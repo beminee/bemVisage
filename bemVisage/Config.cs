@@ -50,7 +50,6 @@ namespace bemVisage
         public MenuItem<bool> BmBehavior { get; }
         public MenuItem<Slider> BlinkDistance2Mouse { get; set; }
         public MenuItem<Slider> BlinkDistance2Enemy { get; set; }
-        public MenuItem<Slider> MinimumDistanceToOrbwalker { get; set; }
         public MenuItem<bool> SoulAssumptionDraw { get; set; }
         public MenuItem<bool> GraveChillsDraw { get; set; }
         public MenuItem<bool> DrawTargetIndicator { get; set; } 
@@ -59,6 +58,8 @@ namespace bemVisage
         public MenuItem<Slider> PosY { get; set; }
 
         public MenuItem<Slider> TextSize { get; set; }
+
+        public MenuItem<Slider> OrbwalkMinimumDistance { get; set; }
 
         public Config(BemVisage Main)
         {
@@ -79,6 +80,8 @@ namespace bemVisage
             BmBehavior = ComboMenu.Item("Keep combo if Blade Mail", false);
             BlinkDistance2Mouse = ComboMenu.Item("Blink Distance to Mouse", new Slider(600, 0, 1200));
             BlinkDistance2Enemy = ComboMenu.Item("Blink Distance to Enemy", new Slider(250, 0, 550));
+            //OrbwalkMinimumDistance = ComboMenu.Item("Orbwalker Minimum Distance", new Slider(500, 0, 600));
+            //OrbwalkMinimumDistance.Item.Tooltip = "Set to 0 to disable";
 
 
             FamiliarsLock = FamiliarMenu.Item("Units Target Lock", new KeyBind('E', KeyBindType.Toggle, false));

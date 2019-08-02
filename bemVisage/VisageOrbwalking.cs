@@ -26,13 +26,17 @@ using Ensage.SDK.Service;
 using Ensage.SDK.TargetSelector;
 using log4net;
 using PlaySharp.Toolkit.Helper.Annotations;
+using PlaySharp.Toolkit.Logging;
 using SharpDX;
+using Vector3Extensions = Ensage.Common.Extensions.SharpDX.Vector3Extensions;
 
 namespace bemVisage
 {
     [PublicAPI]
     public class VisageOrbwalking : KeyPressOrbwalkingModeAsync
     {
+        public ILog Log { get; } = AssemblyLogs.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private BemVisage Main { get; set; }
         private Config Config { get; set; }
         private MultiSleeper MultiSleeper { get; set; }
@@ -295,7 +299,26 @@ namespace bemVisage
                         await Task.Delay(necronomicon.GetCastDelay(), token);
                     }
 
-                    Main.Context.Orbwalker.Active.OrbwalkTo(target);
+                    //Log.Debug($"{this.Config.OrbwalkMinimumDistance.Value.Value}");
+                    //if (this.Config.OrbwalkMinimumDistance.Value.Value > 0)
+                    //{
+                    //    var l = (this.Owner.Distance2D(target) - this.Config.OrbwalkMinimumDistance.Value.Value) / this.Config.OrbwalkMinimumDistance.Value.Value;
+                    //    var posA = this.Owner.Position;
+                    //    var posB = target.Position;
+                    //    var x = (posA.X + (l * posB.X)) / (1 + l);
+                    //    var y = (posA.Y + (l * posB.Y)) / (1 + l);
+                    //    var position = new Vector3((int)x, (int)y, posA.Z);
+                    //    var orbwalkPosition = Vector3Extensions.Extend(position, Game.MousePosition, 200);
+
+                    //    ParticleManager.DrawCircle(orbwalkPosition, "test", 50, Color.Red);
+
+                    //    Main.Context.Orbwalker.OrbwalkingPoint = orbwalkPosition;
+                    //    Main.Context.Orbwalker.Active.OrbwalkTo(target);
+                    //}
+                    //else
+                    //{
+                        Main.Context.Orbwalker.Active.OrbwalkTo(target);
+                    //}
                 }
             }
         }
