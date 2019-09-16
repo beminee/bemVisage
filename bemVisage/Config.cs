@@ -59,7 +59,7 @@ namespace bemVisage
 
         public MenuItem<Slider> TextSize { get; set; }
 
-        public MenuItem<Slider> OrbwalkMinimumDistance { get; set; }
+        //public MenuItem<Slider> OrbwalkMinimumDistance { get; set; }
 
         public Config(BemVisage Main)
         {

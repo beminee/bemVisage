@@ -24,7 +24,6 @@ using bemVisage;
 using bemVisage.Core;
 using SharpDX;
 using System.Linq;
-using bemVisage.Utilities;
 using Ensage.SDK.Helpers;
 using UnitExtensions = Ensage.SDK.Extensions.UnitExtensions;
 
@@ -36,7 +35,7 @@ namespace bemVisage
         [ImportMany] private IEnumerable<IFeature> features;
 
         public IServiceContext Context { get; }
-        public IRendererManager RendererManager { get; set; }
+        public IRenderManager RendererManager { get; set; }
         protected RenderMode RenderMode => Drawing.RenderMode;
         protected bool IsDx9 => RenderMode == RenderMode.Dx9;
         protected bool IsDx11 => RenderMode == RenderMode.Dx11;
@@ -169,7 +168,7 @@ namespace bemVisage
             RendererManager.Draw -= OnDraw;
         }
 
-        private void OnDraw(object sender, EventArgs e)
+        private void OnDraw(IRenderer renderer1)
         {
             if (Config.DrawInformationTab)
             {
@@ -178,32 +177,32 @@ namespace bemVisage
                     var startPos = new Vector2(this.Config.PosX.Value, this.Config.PosY.Value);
 
                     var combo = Config.ComboKey;
-                    RendererManager.DrawText(startPos,
+                    renderer1.DrawText(startPos,
                         "Combo" + " [" + Utils.KeyToText(Config.ComboKey.Item.GetValue<KeyBind>().Key) + "] " +
                         (combo ? "ON" : "OFF"), combo ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
                     var lastHit = Config.LasthitKey;
-                    RendererManager.DrawText(startPos + new Vector2(0, 30),
+                    renderer1.DrawText(startPos + new Vector2(0, 30),
                         "Lane Push" + " [" + Utils.KeyToText(Config.LasthitKey.Item.GetValue<KeyBind>().Key) + "] " +
                         (lastHit ? "ON" : "OFF"), lastHit ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
                     var follow = Config.FollowKey;
-                    RendererManager.DrawText(startPos + new Vector2(0, 60),
+                    renderer1.DrawText(startPos + new Vector2(0, 60),
                         "Follow" + " [" + Utils.KeyToText(Config.FollowKey.Item.GetValue<KeyBind>().Key) + "] " +
                         (follow ? "ON" : "OFF"), follow ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, Config.TextSize);
 
                     if (Config.FamiliarTarget != null)
                     {
                         var hero = LoadHeroTexture(Config.FamiliarTarget.HeroId);
-                        RendererManager.DrawTexture(Config.FamiliarTarget.HeroId.ToString(), new RectangleF(startPos.X + 25, startPos.Y - 75, 100, 66));
-                        RendererManager.DrawRectangle(new RectangleF(startPos.X + 22, startPos.Y - 77, 103, 69),
+                        renderer1.DrawTexture(Config.FamiliarTarget.HeroId.ToString(), new RectangleF(startPos.X + 25, startPos.Y - 75, 100, 66));
+                        renderer1.DrawRectangle(new RectangleF(startPos.X + 22, startPos.Y - 77, 103, 69),
                             this.Config.FamiliarsLock.Item.IsActive() ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, 3f);
                     }
                     else
                     {
                         var hero = LoadEmptyTexture();
-                        RendererManager.DrawTexture("default", new RectangleF(startPos.X + 25, startPos.Y - 75, 100, 66));
-                        RendererManager.DrawRectangle(new RectangleF(startPos.X + 22, startPos.Y - 77, 103, 69),
+                        renderer1.DrawTexture("default", new RectangleF(startPos.X + 25, startPos.Y - 75, 100, 66));
+                        renderer1.DrawRectangle(new RectangleF(startPos.X + 22, startPos.Y - 77, 103, 69),
                             this.Config.FamiliarsLock.Item.IsActive() ? System.Drawing.Color.LawnGreen : System.Drawing.Color.Red, 3f);
                     }
                 }
@@ -218,29 +217,13 @@ namespace bemVisage
 
         public async Task LoadHeroTexture(HeroId id)
         {
-            if (IsDx11)
-            {
-                D3D11TextureManagerBem.LoadFromDota($"{id}", $@"panorama/images/heroes/{id}_png.vtex_c");
-            }
-            else
-            {
-                RendererManager.TextureManager.LoadFromDota($"{id}", $@"panorama/images/heroes/{id}_png.vtex_c");
-            }
-
+            RendererManager.TextureManager.LoadFromDota($"{id}", $@"panorama/images/heroes/{id}_png.vtex_c");
             await Task.Delay(150);
         }
 
         public async Task LoadEmptyTexture()
         {
-            if (IsDx11)
-            {
-                D3D11TextureManagerBem.LoadFromDota($"default", $@"panorama/images/heroes/npc_dota_hero_default_png.vtex_c");
-            }
-            else
-            {
-                RendererManager.TextureManager.LoadFromDota($"default", $@"panorama/images/heroes/npc_dota_hero_default_png.vtex_c");
-            }
-
+            RendererManager.TextureManager.LoadFromDota($"default", $@"panorama/images/heroes/npc_dota_hero_default_png.vtex_c");
             await Task.Delay(150);
         }
 
