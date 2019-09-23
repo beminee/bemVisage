@@ -149,17 +149,17 @@ namespace bemVisage.Core
                                 if (ability1.AbilityBehavior.HasFlag(AbilityBehavior.NoTarget))
                                 {
                                     ability1.UseAbility();
-                                    await Task.Delay(180, token);
+                                    await Task.Delay(250, token);
                                 }
                                 else if (ability1.AbilityBehavior.HasFlag(AbilityBehavior.UnitTarget))
                                 {
                                     ability1.UseAbility(target);
-                                    await Task.Delay(180, token);
+                                    await Task.Delay(250, token);
                                 }
                                 else if (ability1.AbilityBehavior.HasFlag(AbilityBehavior.Point))
                                 {
                                     ability1.UseAbility(target.Position);
-                                    await Task.Delay(180, token);
+                                    await Task.Delay(250, token);
                                 }
                             }
                             else if (ability1 != null
@@ -168,7 +168,7 @@ namespace bemVisage.Core
                                      && unit.Unit.Distance2D(this.Owner) <= ability1.CastRange)
                             {
                                 ability1.UseAbility(this.Owner);
-                                await Task.Delay(180, token);
+                                await Task.Delay(250, token);
                             }
 
                             if (ability2 != null
@@ -182,17 +182,17 @@ namespace bemVisage.Core
                                 if (ability2.AbilityBehavior.HasFlag(AbilityBehavior.NoTarget))
                                 {
                                     ability2.UseAbility();
-                                    await Task.Delay(180, token);
+                                    await Task.Delay(250, token);
                                 }
                                 else if (ability2.AbilityBehavior.HasFlag(AbilityBehavior.UnitTarget))
                                 {
                                     ability2.UseAbility(target);
-                                    await Task.Delay(180, token);
+                                    await Task.Delay(250, token);
                                 }
                                 else if (ability2.AbilityBehavior.HasFlag(AbilityBehavior.Point))
                                 {
                                     ability2.UseAbility(target.Position);
-                                    await Task.Delay(180, token);
+                                    await Task.Delay(250, token);
                                 }
                             }
                             else if (ability2 != null
@@ -201,7 +201,7 @@ namespace bemVisage.Core
                                      && unit.Unit.Distance2D(this.Owner) <= ability2.CastRange)
                             {
                                 ability2.UseAbility(this.Owner);
-                                await Task.Delay(180, token);
+                                await Task.Delay(250, token);
                             }
                             unit.FamiliarMovementManager.Move(target.InFront(50));
                         }
@@ -226,7 +226,7 @@ namespace bemVisage.Core
                         else
                         {
                             unit.Unit.Follow(this.Owner);
-                            await Task.Delay(150, token);
+                            await Task.Delay(350, token);
                         }
                     }
                 }

@@ -105,6 +105,8 @@ namespace bemVisage.Core
                         .Where(x => x.IsAlive && x.IsEnemy(familiar.Unit)).OrderBy(z => z.Distance2D(familiar.Unit))
                         .FirstOrDefault();
 
+                    var rnd = new Random();
+
                     if (closestTower != null && closestTower.IsInRange(familiar.Unit, 1000))
                     {
                         var myDist = familiar.Unit.Distance2D(closestTower);
@@ -117,7 +119,7 @@ namespace bemVisage.Core
                             if (closestTower.AttackTarget != null && closestTower.AttackTarget.Equals(familiar.Unit))
                             {
                                 var creepForAggro = allyCreeps.FirstOrDefault();
-                                if (creepForAggro != null)
+                                if (creepForAggro != null && !Sleeper.Sleeping)
                                 {
                                     familiar.Unit.Attack(creepForAggro);
                                     return;
@@ -135,14 +137,16 @@ namespace bemVisage.Core
                                 .Where(x => x.IsAlive && x.IsAlly(familiar.Unit))
                                 .OrderBy(z => z.Distance2D(familiar.Unit))
                                 .FirstOrDefault();
-                            if (friendlyTower != null)
+                            if (friendlyTower != null && !Sleeper.Sleeping)
                             {
                                 familiar.Unit.Move(friendlyTower.Position);
+                                Sleeper.Sleep(100);
                                 return;
                             }
                             else
                             {
                                 familiar.Unit.Move(this.Fountain.Position);
+                                Sleeper.Sleep(100);
                                 return;
                             }
                         }

@@ -142,6 +142,7 @@ namespace bemVisage.Core
                                                                    x.RemainingTime > 0.5f);
                         var familiarsStoneForm = familiar.StoneForm;
 
+                        var rnd = new Random();
                         if (!target.IsInvulnerable() && !target.IsAttackImmune())
                         {
                             if (Main.IsAbilityEnabled(familiarsStoneForm.Ability.Id)
@@ -166,6 +167,7 @@ namespace bemVisage.Core
                                      && !MultiSleeper.Sleeping("FamiliarsStoneForm"))
                             {
                                 familiar.FamiliarMovementManager.Move(target.InFront(50));
+                                await Task.Delay(rnd.Next(50, 150), token);
                             }
                             //else
                             //{
@@ -199,7 +201,7 @@ namespace bemVisage.Core
                         else
                         {
                             familiar.Unit.Follow(this.Owner);
-                            await Task.Delay(150, token);
+                            await Task.Delay(350, token);
                         }
                     }
                 }

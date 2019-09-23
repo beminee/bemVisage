@@ -83,7 +83,7 @@ namespace bemVisage.Core
                     {
                         if (Main.SoulAssumption.UseAbility(target))
                         {
-                            await Task.Delay(Main.SoulAssumption.GetCastDelay(target), token);
+                            await Task.Delay(Main.SoulAssumption.GetCastDelay(target) + 20, token);
                         }
                     }
                     else
