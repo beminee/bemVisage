@@ -35,6 +35,8 @@ namespace bemVisage
         public MenuFactory ComboMenu { get; set; }
         public MenuFactory Drawings { get; set; }
         public MenuFactory FamiliarMenu { get; set; }
+
+        public MenuFactory OrderLimitter { get; set; }
         public MenuItem<KeyBind> ComboKey { get; set; }
 
         public MenuItem<StringList> TargetOption { get; set; }
@@ -61,6 +63,9 @@ namespace bemVisage
 
         //public MenuItem<Slider> OrbwalkMinimumDistance { get; set; }
 
+        public MenuItem<bool> OrderLimiterEnabled { get; set; }
+        public MenuItem<Slider> OrderLimiterDelay { get; set; }
+
         public Config(BemVisage Main)
         {
             bemVisage = Main;
@@ -72,6 +77,7 @@ namespace bemVisage
             LanePushing = Factory.Menu("Lane Push");
             AbilitiesInCombo = Factory.Menu("Combo Abilities");
             Drawings = Factory.Menu("Drawings");
+            OrderLimitter = Factory.Menu("Order Limiter");
             LinkenBreaker = AbilitiesInCombo.Menu("Linken Breaker");
             ComboMenu = AbilitiesInCombo.Menu("Combo Menu");
             FamiliarMenu = Factory.Menu("Unit Menu");
@@ -96,6 +102,9 @@ namespace bemVisage
             TextSize = Drawings.Item("Text size", new Slider(13, 1, 100));
             PosX = Drawings.Item("Drawing X", new Slider(1750, 0, 1800));
             PosY = Drawings.Item("Drawing Y", new Slider(850, 0, 1800));
+
+            OrderLimiterEnabled = OrderLimitter.Item("Enabled", false);
+            OrderLimiterDelay = OrderLimitter.Item("Delay", new Slider(25, 1, 100));
 
             ComboKey.Item.ValueChanged += ComboKeyChanged;
             ComboKey.PropertyChanged += ComboKeyPropertyChanged;

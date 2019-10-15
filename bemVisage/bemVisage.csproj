@@ -116,6 +116,7 @@
     <Compile Include="BemVisage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Updater.cs" />
+    <Compile Include="Utilities\Order.cs" />
     <Compile Include="VisageOrbwalking.cs" />
   </ItemGroup>
   <ItemGroup>

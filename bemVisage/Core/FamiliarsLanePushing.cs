@@ -124,7 +124,7 @@ namespace bemVisage.Core
                                     familiar.Unit.Attack(creepForAggro);
                                     return;
                                 }
-                                else
+                                else if (!Sleeper.Sleeping)
                                 {
                                     familiar.Unit.Move(Fountain.Position);
                                     return;
@@ -143,7 +143,7 @@ namespace bemVisage.Core
                                 Sleeper.Sleep(100);
                                 return;
                             }
-                            else
+                            else if (!Sleeper.Sleeping)
                             {
                                 familiar.Unit.Move(this.Fountain.Position);
                                 Sleeper.Sleep(100);
