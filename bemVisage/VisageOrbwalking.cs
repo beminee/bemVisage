@@ -395,6 +395,8 @@ namespace bemVisage
             {
                 this.Context.Particle.Remove("FamiliarTargetIndicator");
             }
+
+            Config.idek = Config.CameraEnabled.Value;
         }
     }
 }

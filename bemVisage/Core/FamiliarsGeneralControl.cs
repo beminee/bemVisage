@@ -91,6 +91,7 @@ namespace bemVisage.Core
                 {
                     if (Config.FollowKey)
                     {
+                        CameraExtensions.PositionCamera(this.Owner);
                         familiar.Unit.Follow(this.Owner);
                         await Task.Delay(250, token);
                     }
@@ -99,6 +100,7 @@ namespace bemVisage.Core
                     if (familiar.Unit.Health * 100 / familiar.Unit.MaximumHealth <= FamiliarHPThreshold &&
                         familiarsStoneForm.CanBeCasted)
                     {
+                        CameraExtensions.PositionCamera(familiar.Unit);
                         familiarsStoneForm.UseAbility();
                         await Task.Delay(familiarsStoneForm.GetCastDelay(), token);
                     }
@@ -117,6 +119,7 @@ namespace bemVisage.Core
                 {
                     if (Config.FollowKey)
                     {
+                        CameraExtensions.PositionCamera(this.Owner);
                         unit.Unit.Follow(this.Owner);
                         await Task.Delay(250, token);
                     }

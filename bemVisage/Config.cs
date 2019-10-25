@@ -30,13 +30,12 @@ namespace bemVisage
 
         public MenuFactory Factory { get; set; }
         public MenuFactory LanePushing { get; set; }
+        public MenuFactory CameraPositioner { get; set; }
         public MenuFactory AbilitiesInCombo { get; set; }
         public MenuFactory LinkenBreaker { get; set; }
         public MenuFactory ComboMenu { get; set; }
         public MenuFactory Drawings { get; set; }
         public MenuFactory FamiliarMenu { get; set; }
-
-        public MenuFactory OrderLimitter { get; set; }
         public MenuItem<KeyBind> ComboKey { get; set; }
 
         public MenuItem<StringList> TargetOption { get; set; }
@@ -63,8 +62,10 @@ namespace bemVisage
 
         //public MenuItem<Slider> OrbwalkMinimumDistance { get; set; }
 
-        public MenuItem<bool> OrderLimiterEnabled { get; set; }
-        public MenuItem<Slider> OrderLimiterDelay { get; set; }
+        public MenuItem<bool> CameraEnabled { get; set; }
+
+        public static bool idek { get; set; }
+
 
         public Config(BemVisage Main)
         {
@@ -77,7 +78,7 @@ namespace bemVisage
             LanePushing = Factory.Menu("Lane Push");
             AbilitiesInCombo = Factory.Menu("Combo Abilities");
             Drawings = Factory.Menu("Drawings");
-            OrderLimitter = Factory.Menu("Order Limiter");
+            CameraPositioner = Factory.Menu("Camera Positioner");
             LinkenBreaker = AbilitiesInCombo.Menu("Linken Breaker");
             ComboMenu = AbilitiesInCombo.Menu("Combo Menu");
             FamiliarMenu = Factory.Menu("Unit Menu");
@@ -103,9 +104,7 @@ namespace bemVisage
             PosX = Drawings.Item("Drawing X", new Slider(1750, 0, 1800));
             PosY = Drawings.Item("Drawing Y", new Slider(850, 0, 1800));
 
-            OrderLimiterEnabled = OrderLimitter.Item("Enabled", false);
-            OrderLimiterDelay = OrderLimitter.Item("Delay", new Slider(25, 1, 100));
-
+            CameraEnabled = CameraPositioner.Item("Enabled", false);
             ComboKey.Item.ValueChanged += ComboKeyChanged;
             ComboKey.PropertyChanged += ComboKeyPropertyChanged;
             var key = KeyInterop.KeyFromVirtualKey((int) ComboKey.Value.Key);

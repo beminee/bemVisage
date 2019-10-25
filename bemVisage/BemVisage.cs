@@ -25,7 +25,6 @@ using bemVisage;
 using bemVisage.Core;
 using SharpDX;
 using System.Linq;
-using bemVisage.Utilities;
 using Ensage.Common.Objects.UtilityObjects;
 using Ensage.SDK.Helpers;
 using UnitExtensions = Ensage.SDK.Extensions.UnitExtensions;
@@ -135,135 +134,6 @@ namespace bemVisage
             AbilityFactory = context.AbilityFactory;
         }
 
-        private readonly Dictionary<uint, Order> EntityOrders = new Dictionary<uint, Order>();
-
-        private readonly Dictionary<uint, Order> Cache = new Dictionary<uint, Order>();
-
-        private bool IsRunning;
-
-        private bool IsNewOrder;
-
-        private readonly Sleeper Sleeper = new Sleeper();
-
-        private void EntityRemoved(object sender, Entity e)
-        {
-            EntityOrders.Remove(e.Handle);
-        }
-
-        private readonly HashSet<OrderId> OrderIds = new HashSet<OrderId>
-        {
-            OrderId.MoveLocation,
-            OrderId.MoveTarget,
-            OrderId.AttackLocation,
-            OrderId.AttackTarget,
-            OrderId.AbilityLocation,
-            OrderId.AbilityTarget,
-            OrderId.AbilityTargetTree,
-            OrderId.Ability,
-            OrderId.ToggleAbility,
-            OrderId.ToggleAutoCast,
-            OrderId.AbilityTargetRune,
-            OrderId.MoveToDirection
-        };
-
-        private void AddOrders(IEnumerable<Entity> entities, OrderId orderId, Vector3 targetPosition, Entity target, Ability ability)
-        {
-            foreach (var entity in entities)
-            {
-                var handle = ability != null ? ability.Handle : entity.Handle;
-                if (!EntityOrders.TryGetValue(handle, out var entityOrder))
-                {
-                    entityOrder = new Order();
-                    EntityOrders[handle] = entityOrder;
-                }
-
-                entityOrder.Entity = entity;
-                entityOrder.OrderId = orderId;
-                entityOrder.TargetPosition = targetPosition;
-                entityOrder.Target = target;
-                entityOrder.Ability = ability;
-
-                Cache[handle] = entityOrder;
-            }
-        }
-
-        private void OnExecuteOrder(Player sender, ExecuteOrderEventArgs args)
-        {
-            if (args.IsPlayerInput)
-            {
-                return;
-            }
-
-            if (IsNewOrder)
-            {
-                return;
-            }
-
-            if (!OrderIds.Contains(args.OrderId))
-            {
-                return;
-            }
-
-            try
-            {
-                AddOrders(args.Entities, args.OrderId, args.TargetPosition, args.Target, args.Ability);
-
-                args.Process = false;
-
-                if (IsRunning || Sleeper.Sleeping)
-                {
-                    return;
-                }
-
-                IsRunning = true;
-
-                UpdateManager.BeginInvoke(() =>
-                {
-                    var rnd = new Random();
-                    var delay = rnd.Next(0, 10) + this.Config.OrderLimiterDelay.Value;
-
-                    Sleeper.Sleep(delay);
-
-                    var orders = Cache.Select(x => x.Value);
-                    var order = orders.OrderBy(x => x.Time).First();
-                    var newOrders = orders.Where(x => x.OrderId == order.OrderId && x.TargetPosition == order.TargetPosition && x.Target == order.Target && x.Ability == order.Ability);
-
-                    IsNewOrder = true;
-                    Player.EntitiesOrder(order.OrderId, newOrders.Select(x => x.Entity), order.Target?.Index ?? 0, order.Ability?.Index ?? 0, order.TargetPosition, false);
-                    IsNewOrder = false;
-
-                    foreach (var newOrder in newOrders)
-                    {
-                        newOrder.Time = Game.RawGameTime;
-                    }
-
-                    Cache.Clear();
-                    IsRunning = false;
-                });
-            }
-            catch (Exception e)
-            {
-                Cache.Clear();
-                IsRunning = false;
-
-                Log.Error(e);
-            }
-        }
-
-        private void EnabledPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (this.Config.OrderLimiterEnabled)
-            {
-                EntityManager<Entity>.EntityRemoved += EntityRemoved;
-                Player.OnExecuteOrder += OnExecuteOrder;
-            }
-            else
-            {
-                EntityManager<Entity>.EntityRemoved -= EntityRemoved;
-                Player.OnExecuteOrder -= OnExecuteOrder;
-            }
-        }
-
         protected override void OnActivate()
         {
             base.OnActivate();
@@ -284,14 +154,7 @@ namespace bemVisage
                 Log.Debug($"{feature.ToString()} activated.");
             }
 
-            if (this.Config.OrderLimiterEnabled)
-            {
-                EntityManager<Entity>.EntityRemoved += EntityRemoved;
-                Player.OnExecuteOrder += OnExecuteOrder;
-            }
-
             RendererManager.Draw += OnDraw;
-            this.Config.OrderLimiterEnabled.PropertyChanged += EnabledPropertyChanged;
         }
 
         protected override void OnDeactivate()
@@ -304,13 +167,6 @@ namespace bemVisage
                 feature.Dispose();
             }
 
-            if (this.Config.OrderLimiterEnabled)
-            {
-                EntityManager<Entity>.EntityRemoved -= EntityRemoved;
-                Player.OnExecuteOrder -= OnExecuteOrder;
-            }
-
-            this.Config.OrderLimiterEnabled.PropertyChanged -= EnabledPropertyChanged;
             Config?.Dispose();
             RendererManager.Draw -= OnDraw;
         }

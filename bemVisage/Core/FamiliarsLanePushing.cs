@@ -121,11 +121,13 @@ namespace bemVisage.Core
                                 var creepForAggro = allyCreeps.FirstOrDefault();
                                 if (creepForAggro != null && !Sleeper.Sleeping)
                                 {
+                                    CameraExtensions.PositionCamera(creepForAggro);
                                     familiar.Unit.Attack(creepForAggro);
                                     return;
                                 }
                                 else if (!Sleeper.Sleeping)
                                 {
+                                    CameraExtensions.PositionCamera(Fountain);
                                     familiar.Unit.Move(Fountain.Position);
                                     return;
                                 }
@@ -139,12 +141,14 @@ namespace bemVisage.Core
                                 .FirstOrDefault();
                             if (friendlyTower != null && !Sleeper.Sleeping)
                             {
+                                CameraExtensions.PositionCamera(friendlyTower);
                                 familiar.Unit.Move(friendlyTower.Position);
                                 Sleeper.Sleep(100);
                                 return;
                             }
                             else if (!Sleeper.Sleeping)
                             {
+                                CameraExtensions.PositionCamera(Fountain);
                                 familiar.Unit.Move(this.Fountain.Position);
                                 Sleeper.Sleep(100);
                                 return;
@@ -168,13 +172,15 @@ namespace bemVisage.Core
 
                                 if (lowHpCreeps >= 2)
                                 {
+                                    CameraExtensions.PositionCamera(familiar.Unit);
                                     familiar.StoneForm.UseAbility();
                                 }
                             }
                         }
                     }
-                    else
+                    else if (!Ensage.Common.Extensions.UnitExtensions.IsAttacking(familiar.Unit))
                     {
+                        CameraExtensions.PositionCamera(closestPosition.X, closestPosition.Y);
                         familiar.Unit.Attack(closestPosition);
                     }
                 }
